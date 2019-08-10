@@ -8,6 +8,7 @@ public class Movement : MonoBehaviour
     Transform subT;
     Transform T;
     Quaternion oldRot;
+    bool jumping = false;
 
     public int mode;
     // Start is called before the first frame update
@@ -21,6 +22,11 @@ public class Movement : MonoBehaviour
         oldRot = T.rotation;
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) { jumping = true; }
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -29,6 +35,8 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.S)){rb.AddForce(new Vector3(  0, 0,-1500));}
         if (Input.GetKey(KeyCode.A)){rb.AddForce(new Vector3(-1500, 0,  0));}
         if (Input.GetKey(KeyCode.D)){rb.AddForce(new Vector3( 1500, 0,  0));}
+
+        if (jumping) { rb.AddForce(new Vector3(0, 40000, 0)); jumping = false; }
         
         if(!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
@@ -59,10 +67,5 @@ public class Movement : MonoBehaviour
         }
 
         oldRot = T.rotation;
-    }
-
-    private void Update()
-    {
-        //subT.rotation = Quaternion.Euler(0, 0, 0);
     }
 }
